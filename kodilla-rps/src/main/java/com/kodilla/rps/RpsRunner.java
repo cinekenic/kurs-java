@@ -6,23 +6,45 @@ import java.util.Scanner;
 public class RpsRunner {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Random random = new Random();
 
         boolean endGame = false;
 
         while (!endGame) {
+            String playerName = getPlayerName(scanner);
+            int roundsToWin = getRoundsToWin(scanner);
+            playGame(scanner, playerName, roundsToWin);
+
+            System.out.println("Czy chcesz zakończyć grę? (t/n)");
+
+            if (scanner.nextLine().equals("t")) {
+                endGame = true;
+            }
+
+        }
+
+        System.out.println("Dziękujemy za grę!");
+        scanner.close();
+
+    }
+
+        private static String getPlayerName(Scanner scanner){
             System.out.println("Podaj swoje imię:");
-            String playerName = scanner.nextLine();
+            return scanner.nextLine();
+        }
 
-
+         private static int getRoundsToWin(Scanner scanner){
             System.out.println("Podaj liczbę wygranych rund do zwycięstwa:");
-
-            int roundsToWin = scanner.nextInt();
+            int rounds = scanner.nextInt();
             scanner.nextLine();
+            return rounds;
+        }
+
+    private static void playGame(Scanner scanner, String playerName, int roundsToWin){
+
+            Random random = new Random();
 
             int playerWins = 0;
             int computerWins = 0;
-
 
             System.out.println("Klawisze do obsługi gry:");
             System.out.println("1 – Kamień");
@@ -35,42 +57,29 @@ public class RpsRunner {
 
 
             while (roundActive) {
-                System.out.println("Wybierz swój ruch: (1-Kamień, 2-Papier, 3-Nożyce)");
-                String playerMove = scanner.nextLine();
+                String playerMove = getPlayerMove(scanner);
 
                 if(playerMove.equals("x")) {
-                    System.out.println("Czy na pewno zakończyć grę? (t/n)");
-                    if(scanner.nextLine().equals("t")) {
-                        endGame = true;
-                        break;
-                    }else {
-                        continue;
+                    if (confirmAction(scanner, "Czy na pewno zakończyć grę? (t/n)")){
+                    return;
                     }
+                    continue;
                 }
 
                 if(playerMove.equals("n")) {
-                    System.out.println("Czy na pewno zakończyć aktualną grę? (t/n)");
-                    if(scanner.nextLine().equals("t")) {
-                        break;
-                    }else {
-                        continue;
+                    if (confirmAction(scanner, "Czy na pewno zakończyć aktualną grę? (t/n)")) {
+                        return;
                     }
+                    continue;
                 }
 
-                int playerChoice;
-
-                try{
-                    playerChoice = Integer.parseInt(playerMove);
-                    if(playerChoice < 1 || playerChoice > 3) {
-                        System.out.println("Niepoprawny wybór, spróbuj ponownie.");
-                        continue;
-                    }
-                }catch(NumberFormatException e) {
+                int playerChoice = parsePlayerChoice(playerMove);
+                if(playerChoice == -1) {
                     System.out.println("Niepoprawny wybór, spróbuj ponownie.");
                     continue;
                 }
 
-                int computerChoice = random.nextInt(3)+1;
+                int computerChoice = random.nextInt(3) + 1;
 
                 System.out.println(playerName + " wybrał: " + moveName(playerChoice));
                 System.out.println("Komputer wybrał: " + moveName(computerChoice));
@@ -97,14 +106,34 @@ public class RpsRunner {
                     roundActive = false;
                 }
             }
-
-        }
-
-        System.out.println("Dziękujemy za grę!");
-        scanner.close();
     }
 
-    private static String moveName(int move) {
+
+
+private static String getPlayerMove(Scanner scanner){
+    System.out.println("Wybierz swój ruch: (1-Kamień, 2-Papier, 3-Nożyce)");
+    return scanner.nextLine();
+}
+
+private static boolean confirmAction(Scanner scanner, String message){
+    System.out.println(message);
+    return scanner.nextLine().equals("t");
+}
+
+
+private static int parsePlayerChoice(String playerMove){
+        try {
+            int choice = Integer.parseInt(playerMove);
+            if(choice < 1 || choice > 3) {
+                return -1;
+            }
+            return choice;
+        }catch(NumberFormatException e) {
+            return -1;
+        }
+}
+
+private static String moveName(int move) {
         return switch (move){
             case 1 -> "Kamień";
             case 2 -> "Papier";
