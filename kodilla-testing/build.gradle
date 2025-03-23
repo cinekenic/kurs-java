@@ -1,5 +1,7 @@
 plugins {
 	id 'java'
+	id 'org.springframework.boot' version '3.2.3'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.kodilla'
@@ -16,14 +18,13 @@ repositories {
 }
 
 dependencies {
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.4'
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.11.4'
-	testImplementation 'org.junit.jupiter:junit-jupiter'
-	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.14.2'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// Spring Boot starter (wciąga wszystko potrzebne do aplikacji)
+	implementation 'org.springframework.boot:spring-boot-starter'
+
+	// Starter testowy Springa z JUnit, Mockito itd.
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
