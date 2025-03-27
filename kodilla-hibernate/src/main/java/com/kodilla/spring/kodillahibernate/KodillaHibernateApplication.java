@@ -10,11 +10,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = "com.kodilla.hibernate")
 @EnableJpaRepositories(basePackages = {
 		"com.kodilla.hibernate.task.dao",
-		"com.kodilla.hibernate.tasklist.dao"
+		"com.kodilla.hibernate.tasklist.dao",
+		"com.kodilla.hibernate.manytomany.dao",
+		"com.kodilla.hibernate.invoice.dao"
 })
 @EntityScan(basePackages = {
 		"com.kodilla.hibernate.task",
-		"com.kodilla.hibernate.tasklist"
+		"com.kodilla.hibernate.tasklist",
+		"com.kodilla.hibernate.manytomany",
+		"com.kodilla.hibernate.invoice",
 })
 public class KodillaHibernateApplication {
 
