@@ -7,10 +7,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = KodillaHibernateApplication.class)
 class CompanyDaoTestSuite {
+
+    @Autowired
+    private EmployeeDao employeeDao;
 
     @Autowired
     private CompanyDao companyDao;
@@ -52,12 +57,47 @@ class CompanyDaoTestSuite {
         assertNotEquals(0, greyMatterId);
 
         //CleanUp
-        //try {
-        //    companyDao.deleteById(softwareMachineId);
-        //    companyDao.deleteById(dataMaestersId);
-        //    companyDao.deleteById(greyMatterId);
-        //} catch (Exception e) {
-        //    //do nothing
-        //}
+        try {
+            companyDao.deleteById(softwareMachineId);
+            companyDao.deleteById(dataMaestersId);
+            companyDao.deleteById(greyMatterId);
+        } catch (Exception e) {
+            //do nothing
+        }
+    }
+
+    @Test
+    void testFindByLastNameNamedQuery() {
+
+        //Given
+        Employee johnSmith = new Employee("John", "Smith");
+        employeeDao.save(johnSmith);
+
+        //When
+        List<Employee> result = employeeDao.findByLastName("Smith");
+
+        //Then
+        assertEquals(1, result.size());
+        assertEquals("Smith", result.get(0).getLastName());
+
+        // CleanUp
+        employeeDao.deleteAll();
+    }
+
+    @Test
+    void testFindByFirstThreeLettersNamedNativeQuery() {
+        // Given
+        Company softwareMachine = new Company("SofTech");
+        companyDao.save(softwareMachine);
+
+        // When
+        List<Company> result = companyDao.findByFirstThreeLetters("Sof");
+
+        // Then
+        assertEquals(1, result.size());
+        assertEquals("SofTech", result.get(0).getName());
+
+        // CleanUp
+        companyDao.deleteAll();
     }
 }
