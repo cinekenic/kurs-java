@@ -2,8 +2,13 @@ package com.kodilla.sudoku;
 
 public class MainApp {
     public static void main(String[] args) {
-        SudokuBoard board = new SudokuBoard();
+//        SudokuBoard board = new SudokuBoard();
 //        board.fillRandomValues(20);
-        System.out.println(board);
+//        System.out.println(board);
+        boolean gameFinished = false;
+        while (!gameFinished) {
+            SudokuGame theGame = new SudokuGame();
+            gameFinished = theGame.resolveSudoku();
+        }
     }
 }
