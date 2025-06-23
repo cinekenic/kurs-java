@@ -2,15 +2,20 @@ package com.kodilla.kodillatesting2.config;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class WebDriverConfig {
     public final static String CHROME = "CHROME_DRIVER";
+
     public static WebDriver getDriver(final String driver) {
-
-        System.setProperty("webdriver.chrome.driver", "C:\\Selenium-drivers\\Chrome\\chromedriver-win64\\chromedriver.exe");
-
         if (driver.equals(CHROME)) {
-            return new ChromeDriver();
+            System.setProperty("webdriver.chrome.driver", "C:\\Selenium-drivers\\Chrome\\chromedriver-win64\\chromedriver.exe");
+
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("user-data-dir=C:\\Użytkownicy\\pc\\AppData\\Local\\Google\\Chrome\\User Data");
+            options.addArguments("--profile-directory=Profile 1");
+
+            return new ChromeDriver(options);
         } else {
             return null;
         }
