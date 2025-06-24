@@ -10,12 +10,7 @@ public class WebDriverConfig {
     public static WebDriver getDriver(final String driver) {
         if (driver.equals(CHROME)) {
             System.setProperty("webdriver.chrome.driver", "C:\\Selenium-drivers\\Chrome\\chromedriver-win64\\chromedriver.exe");
-
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("user-data-dir=C:\\Użytkownicy\\pc\\AppData\\Local\\Google\\Chrome\\User Data");
-            options.addArguments("--profile-directory=Profile 1");
-
-            return new ChromeDriver(options);
+            return new ChromeDriver();
         } else {
             return null;
         }
